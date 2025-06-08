@@ -20,7 +20,6 @@ function populateYearDropdown() {
 
 async function populateTypeDropdown() {
     const typeSelect = document.getElementById('typeSelect');
-    try {
         const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW`, {
             headers: { 'X-Api-Key': apiKey }
         });
@@ -45,9 +44,6 @@ async function populateTypeDropdown() {
             option.textContent = type;
             typeSelect.appendChild(option);
         });
-    } catch (error) {
-        console.error("Error populating types:", error);
-    }
 }
 
 async function buscarMotos() {
@@ -56,9 +52,7 @@ async function buscarMotos() {
     const resultsDiv = document.getElementById('results');
 
     resultsDiv.innerHTML = '<p class="no-results">Cargando la colección...</p>';
-
-    try {
-        // Fetch all BMW motorcycles, potentially filtered by year
+       
         const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW${selectedYear ? `&year=${selectedYear}` : ''}`, {
             headers: { 'X-Api-Key': apiKey }
         });
@@ -69,13 +63,13 @@ async function buscarMotos() {
 
         let data = await response.json();
 
-        // Filter by type if a type was selected
+        
         let filteredBikes = data;
         if (selectedType) {
             filteredBikes = data.filter(moto => moto.type && moto.type.toLowerCase() === selectedType);
         }
 
-        resultsDiv.innerHTML = ""; // Clear loading message
+        resultsDiv.innerHTML = "";
 
         if (filteredBikes.length === 0) {
             resultsDiv.innerHTML = "<p class='no-results'><i class='fas fa-exclamation-circle'></i> No se encontraron modelos BMW para tu búsqueda. ¡Intenta con otra combinación!</p>";
@@ -85,7 +79,7 @@ async function buscarMotos() {
         filteredBikes.forEach(moto => {
             const card = document.createElement('div');
             card.className = 'card';
-            const imageUrl = getRandomImage(); // Use a random image from your collection
+            const imageUrl = getRandomImage();
             card.innerHTML = `
                         <img src="${imageUrl}" alt="${moto.make} ${moto.model}">
                         <h3>${moto.make} ${moto.model}</h3>
@@ -95,22 +89,21 @@ async function buscarMotos() {
             card.addEventListener('click', () => {
                 localStorage.setItem('motoSeleccionada', JSON.stringify(moto));
                 localStorage.setItem('selectedMotoImage', imageUrl);
-                window.location.href = 'detalle.html'; // Assuming you have a detail page
+                window.location.href = 'detalle.html';
             });
             resultsDiv.appendChild(card);
         });
-    } catch (error) {
-        resultsDiv.innerHTML = `<p class='no-results'><i class='fas fa-frown'></i> Hubo un problema al cargar los datos. Por favor, revisa tu conexión e inténtalo de nuevo. (${error.message})</p>`;
-        console.error("Error:", error);
-    }
+
 }
 
 const bikeImages = [
-    'https://images.unsplash.com/photo-1606787360230-2f1b3c5d4e6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
-    'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60'
+    "/IMG/moto1.png",
+    "/IMG/moto2.png",  
+    "/IMG/moto3.png",
+    "/IMG/moto4.png",
+    "/IMG/moto5.png",
+    "/IMG/moto6.png",
+    "/IMG/moto7.png"
 ];
 
 
