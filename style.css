@@ -29,3 +29,15 @@ header img {
     object-fit: cover;
     object-position: center;
 }
+
+.tarjeta {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
