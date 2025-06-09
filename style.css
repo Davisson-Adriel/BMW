@@ -222,3 +222,16 @@
     }
 
 }
+
+.aparecer {
+    opacity: 0;
+    animation: aparecerTodo 2s forwards;
+    animation-delay: 1s;
+}
+
+
+@keyframes aparecerTodo {
+    to {
+        opacity: 1;
+    }
+}
