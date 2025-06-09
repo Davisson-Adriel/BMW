@@ -89,13 +89,13 @@ async function buscarMotos() {
 }
 
 const imagenes = [
-    "IMG/moto1.png",
-    "IMG/moto2.png",
-    "IMG/moto3.png",
-    "IMG/moto4.png",
-    "IMG/moto5.png",
-    "IMG/moto6.png",
-    "IMG/moto7.png"
+    "./IMG/moto1.png",
+    "./IMG/moto2.png",
+    "./IMG/moto3.png",
+    "./IMG/moto4.png",
+    "./IMG/moto5.png",
+    "./IMG/moto6.png",
+    "./IMG/moto7.png"
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
