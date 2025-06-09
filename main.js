@@ -1,102 +1,93 @@
 const apiKey = "AGz1+zSCc2OKTTxiMlO//g==ZhJTmw4oOJWllPP8";
 
-function getRandomImage() {
-    const randomIndex = Math.floor(Math.random() * bikeImages.length);
-    return bikeImages[randomIndex];
+function imagenaleatoria() {
+    const index = Math.floor(Math.random() * imagenes.length);
+    return imagenes[index];
 }
 
-function populateYearDropdown() {
-    const yearSelect = document.getElementById('yearSelect');
-    const currentYear = new Date().getFullYear();
-    const startYear = 2000;
+function anosprincipales() {
+    const anoseleccionado = document.getElementById("anoseleccionado");
+    const anosre = new Date().getFullYear();
+    const anoinicio = 2000;
 
-    for (let year = currentYear; year >= startYear; year--) {
-        const option = document.createElement('option');
+    for (let year = anosre; year >= anoinicio; year--) {
+        const option = document.createElement("option");
         option.value = year;
         option.textContent = year;
-        yearSelect.appendChild(option);
+        anoseleccionado.appendChild(option);
     }
 }
 
-async function populateTypeDropdown() {
-    const typeSelect = document.getElementById('typeSelect');
+async function tiposprincipales() {
+    const tipoSeleccionado = document.getElementById("tipoSeleccionado");
     const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW`, {
         headers: { 'X-Api-Key': apiKey }
     });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
     const data = await response.json();
-    const uniqueTypes = new Set();
+    const tipoUnico = new Set();
     data.forEach(moto => {
         if (moto.type) {
-            uniqueTypes.add(moto.type);
+            tipoUnico.add(moto.type);
         }
     });
 
-    const sortedTypes = Array.from(uniqueTypes).sort();
+    const tiposor = Array.from(tipoUnico).sort();
 
-    sortedTypes.forEach(type => {
-        const option = document.createElement('option');
+    tiposor.forEach(type => {
+        const option = document.createElement("option");
         option.value = type.toLowerCase();
         option.textContent = type;
-        typeSelect.appendChild(option);
+        tipoSeleccionado.appendChild(option);
     });
 }
 
 async function buscarMotos() {
-    const selectedType = document.getElementById('typeSelect').value.trim().toLowerCase();
-    const selectedYear = document.getElementById('yearSelect').value.trim();
-    const resultsDiv = document.getElementById('results');
+    const tipoSeleccionado = document.getElementById("tipoSeleccionado").value.trim().toLowerCase();
+    const anoseleccionado = document.getElementById("anoseleccionado").value.trim();
+    const resultsDiv = document.getElementById("results");
 
-    resultsDiv.innerHTML = '<p class="no-results">Cargando...</p>';
+    resultsDiv.innerHTML = "<p>Cargando...</p>";
 
-    const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW${selectedYear ? `&year=${selectedYear}` : ''}`, {
+    const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW${anoseleccionado ? `&year=${anoseleccionado}` : ''}`, {
         headers: { 'X-Api-Key': apiKey }
     });
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
     let data = await response.json();
 
-
-    let filteredBikes = data;
-    if (selectedType) {
-        filteredBikes = data.filter(moto => moto.type && moto.type.toLowerCase() === selectedType);
+    let filtromoto = data;
+    if (tipoSeleccionado) {
+        filtromoto = data.filter(moto => moto.type && moto.type.toLowerCase() === tipoSeleccionado);
     }
 
     resultsDiv.innerHTML = "";
 
-    if (filteredBikes.length === 0) {
-        resultsDiv.innerHTML = "<p class='no-results'><i class='fas fa-exclamation-circle'></i> No se encontraron modelos BMW para tu búsqueda. ¡Intenta con otra combinación!</p>";
+    if (filtromoto.length === 0) {
+        resultsDiv.innerHTML = "<p>No se encontraron resultados para tu búsqueda</p>";
         return;
     }
 
-    filteredBikes.forEach(moto => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        const imageUrl = getRandomImage();
+    filtromoto.forEach(moto => {
+        const card = document.createElement("div");
+        card.className = "card";
+        const imageUrl = imagenaleatoria();
         card.innerHTML = `
                         <img src="${imageUrl}" alt="${moto.make} ${moto.model}">
                         <h3>${moto.make} ${moto.model}</h3>
                         <p>Tipo: ${moto.type || 'N/A'}</p>
                         <p>Año: ${moto.year || 'N/A'}</p>
                     `;
-        card.addEventListener('click', () => {
-            localStorage.setItem('motoSeleccionada', JSON.stringify(moto));
-            localStorage.setItem('selectedMotoImage', imageUrl);
-            window.location.href = 'detalle.html';
+        card.addEventListener("click", () => {
+            localStorage.setItem("motoSeleccionada", JSON.stringify(moto));
+            localStorage.setItem("selectedMotoImage", imageUrl);
+            window.location.href = "detalle.html";
         });
         resultsDiv.appendChild(card);
     });
 
 }
 
-const bikeImages = [
+const imagenes = [
     "/IMG/moto1.png",
     "/IMG/moto2.png",
     "/IMG/moto3.png",
@@ -106,10 +97,10 @@ const bikeImages = [
     "/IMG/moto7.png"
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const moto = JSON.parse(localStorage.getItem('motoSeleccionada'));
-    const imageUrl = localStorage.getItem('selectedMotoImage');
-    const contenedor = document.getElementById('detalleMoto');
+document.addEventListener("DOMContentLoaded", () => {
+    const moto = JSON.parse(localStorage.getItem("motoSeleccionada"));
+    const imageUrl = localStorage.getItem("selectedMotoImage");
+    const contenedor = document.getElementById("detalleMoto");
 
 
     contenedor.innerHTML = `
@@ -127,8 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-window.addEventListener('load', () => {
-    populateYearDropdown();
-    populateTypeDropdown();
+window.addEventListener("load", () => {
+    anosprincipales();
+    tiposprincipales();
     buscarMotos();
 });
