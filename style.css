@@ -184,12 +184,19 @@
 
 @media (max-width: 768px) {
 
-    .search-box {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    .carousel-item img {
+        height: 250px;
     }
 
+    .arreglo {
+        margin-bottom: 2rem;
+    }
+
+    .search-box {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
 
     #detalleMoto {
         margin: 2rem 1rem;

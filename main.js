@@ -18,6 +18,7 @@ function anosprincipales() {
     }
 }
 
+
 async function tiposprincipales() {
     const tipoSeleccionado = document.getElementById("tipoSeleccionado");
     const response = await fetch(`https://api.api-ninjas.com/v1/motorcycles?make=BMW`, {
